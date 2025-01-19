@@ -21,6 +21,7 @@
         <java.version>17</java.version>
         <langchain4j.version>0.35.0</langchain4j.version>
         <junit.version>4.13.1</junit.version>
+        <apache.verson>3.8.1</apache.verson>
     </properties>
 
     <dependencyManagement>
@@ -49,6 +50,13 @@
                 <artifactId>langchain4j-redis</artifactId>
                 <version>${langchain4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache.verson}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

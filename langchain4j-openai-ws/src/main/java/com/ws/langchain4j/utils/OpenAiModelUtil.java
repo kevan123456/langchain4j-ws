@@ -8,6 +8,11 @@ import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
+import dev.langchain4j.store.embedding.EmbeddingStore;
+import dev.langchain4j.store.embedding.redis.RedisEmbeddingStore;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Objects;
 
 /**
  * @author yunhua
@@ -82,6 +87,23 @@ public class OpenAiModelUtil {
                 .logResponses(true)
                 .build();
         return model ;
+    }
+
+    public static EmbeddingStore getEmbeddingStore(Integer dimension,String indexName) {
+        if(Objects.isNull(dimension)){
+            dimension = getEmbeddingModel().dimension() ;
+        }
+        if(StringUtils.isBlank(indexName)){
+
+        }
+        EmbeddingStore embeddingStore = RedisEmbeddingStore.builder()
+                .host("127.0.0.1")
+                .port(6379)
+                .password("123456")
+                .dimension(dimension)
+                .indexName(indexName)
+                .build();
+        return embeddingStore ;
     }
 
 }

@@ -7,6 +7,7 @@ import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.store.embedding.EmbeddingMatch;
+import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.redis.RedisEmbeddingStore;
 import org.junit.Test;
 
@@ -18,10 +19,10 @@ import java.util.List;
  * @see
  * @since 1.0.0
  */
-public class EmbeddingTest extends BaseTest {
+public class OpenAiEmbeddingTest extends BaseTest {
 
     EmbeddingModel embeddingModel = OpenAiModelUtil.getEmbeddingModel();
-
+    EmbeddingStore embeddingStore = OpenAiModelUtil.getEmbeddingStore(null,"test");
 
     @Test
     public void testEmbedding() {
@@ -33,11 +34,6 @@ public class EmbeddingTest extends BaseTest {
 
 
         //向量结果存到redis
-        RedisEmbeddingStore embeddingStore = RedisEmbeddingStore.builder()
-                .host("127.0.0.1")
-                .port(6379)
-                .dimension(embeddingModel.dimension())
-                .build();
         embeddingStore.add(embed.content()) ;
 
         //比较相关性
