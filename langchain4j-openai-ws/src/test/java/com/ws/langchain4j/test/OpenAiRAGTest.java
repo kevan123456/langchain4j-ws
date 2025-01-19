@@ -2,6 +2,7 @@ package com.ws.langchain4j.test;
 
 import com.ws.langchain4j.utils.MyDocumentSplitter;
 import com.ws.langchain4j.utils.OpenAiModelUtil;
+import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.DocumentSplitter;
@@ -11,20 +12,25 @@ import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.memory.ChatMemory;
+import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.output.Response;
+import dev.langchain4j.rag.DefaultRetrievalAugmentor;
 import dev.langchain4j.rag.content.Content;
 import dev.langchain4j.rag.content.injector.ContentInjector;
 import dev.langchain4j.rag.content.injector.DefaultContentInjector;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.rag.query.Query;
+import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -38,6 +44,7 @@ public class OpenAiRAGTest {
     private EmbeddingStore embeddingStore = OpenAiModelUtil.getEmbeddingStore(null,"meituan-index") ;
     private EmbeddingModel embeddingModel = OpenAiModelUtil.getEmbeddingModel() ;
     private ChatLanguageModel model = OpenAiModelUtil.getModel() ;
+
     @Test
     public void test() throws Exception {
         String question = "我要退款，多久到账？" ;
@@ -78,10 +85,49 @@ public class OpenAiRAGTest {
         System.out.println("===================>");
         Response<AiMessage> response = model.generate(promptMessage);
         System.out.println(response.content().text());
-
-
-
     }
+
+
+    interface AiCustomer{
+        String answer(String question) ;
+    }
+
+    public static AiCustomer create(){
+        EmbeddingModel embeddingModel = OpenAiModelUtil.getEmbeddingModel() ;
+        EmbeddingStore embeddingStore = OpenAiModelUtil.getEmbeddingStore(null, "ai-customer-index");
+
+        ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
+                .embeddingStore(embeddingStore)
+                .embeddingModel(embeddingModel)
+                .maxResults(5)
+                .minScore(0.7)
+                .build();
+        ContentInjector contentInjector = new DefaultContentInjector() ;
+        DefaultRetrievalAugmentor retrievalAugmentor = DefaultRetrievalAugmentor.builder()
+                .contentRetriever(contentRetriever)
+                .contentInjector(contentInjector)
+                .build();
+        ChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(100);
+        return AiServices.builder(AiCustomer.class)
+                .chatLanguageModel(OpenAiModelUtil.getModel())
+                .chatMemory(chatMemory)
+                .retrievalAugmentor(retrievalAugmentor)
+                .build();
+    }
+
+    static class DataCalculator{
+        @Tool("计算指定天数后的riqi")
+        String date(Integer days){
+            return LocalDateTime.now().plusDays(days).toString() ;
+        }
+    }
+
+    @Test
+    public void test2(){
+        AiCustomer aiCustomer = create() ;
+        System.out.println(aiCustomer.answer("我要退款，多久到账？"));
+    }
+
 }
 
     
