@@ -64,7 +64,9 @@ public class OpenAiRAGTest {
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)
                 .embeddingModel(embeddingModel)
+                //最相似的5个结果
                 .maxResults(5)
+                //最小相关度分数
                 .minScore(0.7)
                 .build();
         Query query = Query.from(question) ;
@@ -99,7 +101,9 @@ public class OpenAiRAGTest {
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)
                 .embeddingModel(embeddingModel)
+                //最相似的5个结果
                 .maxResults(5)
+                //最小相关度分数
                 .minScore(0.7)
                 .build();
         ContentInjector contentInjector = new DefaultContentInjector() ;
