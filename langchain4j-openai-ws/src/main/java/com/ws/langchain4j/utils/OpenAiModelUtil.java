@@ -29,6 +29,10 @@ public class OpenAiModelUtil {
 
     public static final String OPENAI_MODE_NAME = "gpt-3.5-turbo";
 
+    /**
+     * 获取demo测试模型
+     * @return
+     */
     public static ChatLanguageModel getDemoModel() {
         ChatLanguageModel model = OpenAiChatModel.builder()
                 .apiKey("demo")
@@ -37,6 +41,10 @@ public class OpenAiModelUtil {
         return model ;
     }
 
+    /**
+     * 获取demo测试流式模型
+     * @return
+     */
     public static StreamingChatLanguageModel getDemoStreamModel() {
         StreamingChatLanguageModel model = OpenAiStreamingChatModel.builder()
                 .apiKey("demo")
@@ -45,6 +53,10 @@ public class OpenAiModelUtil {
         return model ;
     }
 
+    /**
+     * 获取模型
+     * @return
+     */
     public static ChatLanguageModel getModel() {
         ChatLanguageModel model = OpenAiChatModel.builder()
                 .apiKey(OPENAI_API_KEY)
@@ -56,6 +68,10 @@ public class OpenAiModelUtil {
         return model ;
     }
 
+    /**
+     * 获取流式模型
+     * @return
+     */
     public static StreamingChatLanguageModel getStreamModel() {
         StreamingChatLanguageModel model = OpenAiStreamingChatModel.builder()
                 .apiKey(OPENAI_API_KEY)
@@ -67,6 +83,10 @@ public class OpenAiModelUtil {
         return model ;
     }
 
+    /**
+     * 获取图片模型
+     * @return
+     */
     public static ImageModel getImageModel() {
         ImageModel model = OpenAiImageModel.builder()
                 .apiKey(OPENAI_API_KEY)
@@ -78,6 +98,10 @@ public class OpenAiModelUtil {
         return model ;
     }
 
+    /**
+     * 获取向量模型
+     * @return
+     */
     public static EmbeddingModel getEmbeddingModel() {
         EmbeddingModel model = OpenAiEmbeddingModel.builder()
                 .apiKey(OPENAI_API_KEY)
@@ -89,6 +113,12 @@ public class OpenAiModelUtil {
         return model ;
     }
 
+    /**
+     * 获取向量存储
+     * @param dimension
+     * @param indexName
+     * @return
+     */
     public static EmbeddingStore getEmbeddingStore(Integer dimension,String indexName) {
         if(Objects.isNull(dimension)){
             dimension = getEmbeddingModel().dimension() ;
