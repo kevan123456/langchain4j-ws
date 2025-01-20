@@ -40,7 +40,7 @@ public class OpenAiToolTest extends BaseTest {
     public void test1() throws Exception{
         ToolSpecification toolSpecification = ToolSpecifications.toolSpecificationFrom(OpenAiToolTest.class.getMethod("dateUtil")) ;
         UserMessage userMessage = UserMessage.from("今天几月几号");
-        Response<AiMessage> aiMessageResponse = model.generate(Collections.singletonList(userMessage)) ;
+        Response<AiMessage> aiMessageResponse = model.generate(Collections.singletonList(userMessage),toolSpecification) ;
         AiMessage aiMessage = aiMessageResponse.content() ;
         System.out.println(aiMessage);
         if(aiMessage.hasToolExecutionRequests()){

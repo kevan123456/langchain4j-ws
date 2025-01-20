@@ -21,7 +21,7 @@ import java.util.List;
 public class OllamaEmbeddingTest extends BaseTest {
 
     EmbeddingModel embeddingModel = OllamaModelUtil.getEmbeddingModel();
-    EmbeddingStore embeddingStore = OllamaModelUtil.getEmbeddingStore(null,"test");
+    EmbeddingStore embeddingStore = OllamaModelUtil.getEmbeddingStore(null,null);
 
     @Test
     public void testEmbedding() {

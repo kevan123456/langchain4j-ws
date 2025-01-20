@@ -100,11 +100,12 @@ public class OllamaModelUtil {
             dimension = getEmbeddingModel().dimension() ;
         }
         if(StringUtils.isBlank(indexName)){
-
+            indexName = "embedding-index" ;
         }
         EmbeddingStore embeddingStore = RedisEmbeddingStore.builder()
                 .host("127.0.0.1")
                 .port(6379)
+                .user("default")
                 .password("123456")
                 .dimension(dimension)
                 .indexName(indexName)

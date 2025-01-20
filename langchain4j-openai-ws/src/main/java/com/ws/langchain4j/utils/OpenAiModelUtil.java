@@ -124,7 +124,7 @@ public class OpenAiModelUtil {
             dimension = getEmbeddingModel().dimension() ;
         }
         if(StringUtils.isBlank(indexName)){
-
+            indexName = "embedding-index" ;
         }
         EmbeddingStore embeddingStore = RedisEmbeddingStore.builder()
                 .host("127.0.0.1")

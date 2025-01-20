@@ -50,7 +50,7 @@ public class OpenAiRAGTest {
         String question = "我要退款，多久到账？" ;
 
         //1、读取本地知识库文件
-        Path docPath = Paths.get(OpenAiRAGTest.class.getClassLoader().getResource("meituan-questin.txt").toURI()) ;
+        Path docPath = Paths.get(OpenAiRAGTest.class.getClassLoader().getResource("meituan-question.txt").toURI()) ;
         DocumentParser parser = new TextDocumentParser() ;
         Document document = FileSystemDocumentLoader.loadDocument(docPath,parser);
         //把知识文件分解一个个条目
